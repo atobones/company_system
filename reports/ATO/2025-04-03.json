@@ -1,0 +1,42 @@
+[
+  {
+    "car_number": "Ibrahim Azad",
+    "comment": "отключили наличку на Bolt ",
+    "status": "готово"
+  },
+  {
+    "car_number": "Kalandarov Lutfullo ",
+    "comment": "перевели аккаунт ",
+    "status": "в ожидании"
+  },
+  {
+    "car_number": "WPR5654X",
+    "comment": "исправали номер машины ",
+    "status": "готово"
+  },
+  {
+    "car_number": "Murodullo Haidarov",
+    "comment": "верификация нового аккаунта ",
+    "status": "в ожидании"
+  },
+  {
+    "car_number": "WM9468S",
+    "comment": "добавили на Uber и Bolt ",
+    "status": "в ожидании"
+  },
+  {
+    "car_number": "WK93108",
+    "comment": "добавили на Uber",
+    "status": "готово"
+  },
+  {
+    "car_number": "WY660XV",
+    "comment": "обновили тех паспорт ",
+    "status": "в ожидании"
+  },
+  {
+    "car_number": "Islom Mustafokulov",
+    "comment": "новый водитель ",
+    "status": "в ожидании"
+  }
+]

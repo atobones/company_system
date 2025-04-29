@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Отчёт за {{ report.date }} — {{ report.employee }}</h2>
+
+<form method="post">
+  {% csrf_token %}
+  <input type="text" name="car_number" placeholder="Номер машины" required>
+  <input type="text" name="comment" placeholder="Комментарий">
+  <select name="status" required>
+    <option value="">Статус</option>
+    <option value="waiting">Ожидание</option>
+    <option value="rejected">Не приняли</option>
+    <option value="done">Готово</option>
+  </select>
+  <button type="submit" class="btn btn-primary">Добавить</button>
+</form>
+
+<h3>Записи:</h3>
+<ul>
+  {% for entry in report.entries.all %}
+    <li>
+      <strong>{{ entry.car_number }}</strong> — {{ entry.get_status_display }}<br>
+      {{ entry.comment }}
+    </li>
+  {% empty %}
+    <li>Нет записей</li>
+  {% endfor %}
+</ul>
+<a href="{% url 'report_list' report.employee %}">← Назад</a>
+{% endblock %}

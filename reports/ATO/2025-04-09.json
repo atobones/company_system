@@ -1,0 +1,42 @@
+[
+  {
+    "car_number": "WD6732U",
+    "comment": "добавили на болт ",
+    "status": "в ожидании"
+  },
+  {
+    "car_number": "WL6754V",
+    "comment": "обновили документы",
+    "status": "готово"
+  },
+  {
+    "car_number": "WX1906F",
+    "comment": "добавили на апликации ",
+    "status": "в ожидании"
+  },
+  {
+    "car_number": "WK93108",
+    "comment": "все ок!",
+    "status": "готово"
+  },
+  {
+    "car_number": "Behruz Karimov",
+    "comment": "новый аккаунт на болт",
+    "status": "в ожидании"
+  },
+  {
+    "car_number": "WOT4609A",
+    "comment": "обновили тех паспорт ",
+    "status": "готово"
+  },
+  {
+    "car_number": "Umarov Islomjon",
+    "comment": "перевели аккаунт Болт",
+    "status": "готово"
+  },
+  {
+    "car_number": "Gulomjonov Jakhongir ",
+    "comment": "обновили документы ",
+    "status": "в ожидании"
+  }
+]

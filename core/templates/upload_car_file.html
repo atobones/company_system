@@ -1,0 +1,105 @@
+<h2>Файлы машины: {{ car.registration_number }}</h2>
+
+<style>
+  .dropzone {
+    border: 2px dashed #888;
+    padding: 20px;
+    text-align: center;
+    color: #888;
+    margin-bottom: 20px;
+    cursor: pointer;
+  }
+</style>
+<a href="/" style="display: inline-block; margin-bottom: 15px; padding: 8px 12px; background: #333; color: white; text-decoration: none; border-radius: 4px;">🏠 Домой</a>
+
+<form id="upload-form" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div id="dropzone" class="dropzone">Перетащите файлы сюда или нажмите</div>
+  <input type="file" name="file" id="file-input" style="display: none;">
+  <button type="submit">Загрузить</button>
+</form>
+
+<hr>
+
+<h3>Список файлов:</h3>
+<ul>
+  {% for file in files %}
+    <li>
+      <a href="#" onclick="openPreview('{{ file }}'); return false;">
+        {% if ".jpg" in file or ".jpeg" in file or ".png" in file %}
+          <img src="?preview={{ file }}" alt="{{ file }}" style="height: 100px;"><br>
+        {% endif %}
+        {{ file }}
+      </a>
+      [<a href="?download={{ file }}">⬇ Скачать</a>]
+      [<a href="?delete={{ file }}" onclick="return confirm('Удалить файл?')">🗑 Удалить</a>]
+    </li>
+  {% endfor %}
+</ul>
+
+<!-- Drag & Drop -->
+<script>
+  const dropzone = document.getElementById('dropzone');
+  const fileInput = document.getElementById('file-input');
+  const form = document.getElementById('upload-form');
+
+  dropzone.addEventListener('click', () => fileInput.click());
+
+  ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    dropzone.addEventListener(eventName, (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+    }, false);
+  });
+
+  dropzone.addEventListener('dragover', () => {
+    dropzone.style.borderColor = 'green';
+  });
+
+  dropzone.addEventListener('dragleave', () => {
+    dropzone.style.borderColor = '#888';
+  });
+
+  dropzone.addEventListener('drop', (e) => {
+    dropzone.style.borderColor = '#888';
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      fileInput.files = files;
+      form.submit();
+    }
+  });
+</script>
+
+<!-- Модальное окно предпросмотра -->
+<div id="previewModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:9999;">
+  <div style="position:relative; background:white; padding:10px; border-radius:10px; max-width:95%; max-height:95%; display:flex; flex-direction:column; align-items:center;">
+    <span style="align-self: flex-end; font-size:24px; cursor:pointer; margin-bottom:10px;" onclick="closePreview()">❌</span>
+    <div id="previewContent" style="width:100%; height:80vh; overflow:auto;"></div>
+  </div>
+</div>
+
+<script>
+  function openPreview(fileName) {
+    const isImage = fileName.toLowerCase().endsWith('.jpg') ||
+                    fileName.toLowerCase().endsWith('.jpeg') ||
+                    fileName.toLowerCase().endsWith('.png');
+
+    const previewContent = document.getElementById('previewContent');
+    const modal = document.getElementById('previewModal');
+
+    if (isImage) {
+      previewContent.innerHTML = `<img src="?preview=${fileName}" style="max-width:100%; max-height:100%;">`;
+    } else {
+      previewContent.innerHTML = `<iframe src="?preview=${fileName}" style="width:100%; height:100%; border:none;"></iframe>`;
+    }
+
+    modal.style.display = 'flex';
+  }
+
+  function closePreview() {
+    const modal = document.getElementById('previewModal');
+    const previewContent = document.getElementById('previewContent');
+    modal.style.display = 'none';
+    previewContent.innerHTML = '';
+  }
+</script>

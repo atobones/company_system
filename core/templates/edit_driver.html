@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Редактировать водителя{% endblock %}
+{% block content %}
+<h2>Редактировать водителя: {{ driver.full_name }}</h2>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Сохранить</button>
+</form>
+
+<a href="{% url 'driver_list' %}">← Назад</a>
+{% endblock %}

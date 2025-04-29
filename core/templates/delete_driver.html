@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Удалить водителя{% endblock %}
+{% block content %}
+<h2>Удалить водителя: {{ driver.full_name }}?</h2>
+
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" style="background:red; color:white;">Удалить</button>
+  <a href="{% url 'driver_list' %}" style="margin-left: 10px;">Отмена</a>
+</form>
+{% endblock %}

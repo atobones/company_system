@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% block title %}Добавить лицензию{% endblock %}
+
+{% block content %}
+<h2><strong>➕ Добавить лицензию</strong></h2>
+
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+
+  <div class="mb-3">
+    <label for="{{ form.registration_number.id_for_label }}">Номер лицензии:</label>
+    {{ form.registration_number|add_class:"form-control" }}
+  </div>
+
+  <div class="mb-3">
+    <label for="{{ form.car.id_for_label }}">Автомобиль:</label>
+    {{ form.car|add_class:"form-select" }}
+  </div>
+
+  <div class="mb-3">
+    <label for="{{ form.file.id_for_label }}">Файл:</label>
+    {{ form.file|add_class:"form-control" }}
+  </div>
+
+  <div class="d-flex gap-3 mt-4">
+    <a href="{% url 'license_list' %}" class="btn btn-back">← Назад</a>
+    <button type="submit" class="btn btn-report">💾 Сохранить</button>
+  </div>
+</form>
+{% endblock %}

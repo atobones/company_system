@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Водители{% endblock %}
+{% block content %}
+
+<!-- КНОПКА добавления -->
+{% if is_admin %}
+<a href="{% url 'add_driver' %}" style="display: inline-block; margin-bottom: 15px; padding: 8px 12px; background: #4CAF50; color: white; text-decoration: none; border-radius: 4px;">➕ Добавить водителя</a>
+{% endif %}
+
+<h2>Список водителей</h2>
+
+<input type="text" id="searchInput" placeholder="Поиск..." style="margin-bottom: 10px; padding: 5px; width: 300px;">
+
+<ul id="driverList">
+  {% for driver in drivers %}
+  <li class="list-item">
+    <span>{{ driver.full_name }}</span>
+    <div>
+      <a href="{% url 'view_driver' driver.id %}" class="btn-view-purple">👁 Просмотр</a>
+      <a href="{% url 'upload_driver_file' driver.id %}" class="btn btn-view">📁 Файлы</a>
+
+      {% if is_admin %}
+      <a href="{% url 'edit_driver' driver.id %}" class="btn btn-edit">✏️ Изменить</a>
+      <a href="{% url 'delete_driver' driver.id %}" class="btn btn-delete">🗑 Удалить</a>
+      {% endif %}
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+
+<script>
+  const searchInput = document.getElementById('searchInput');
+  const list = document.getElementById('driverList').getElementsByTagName('li');
+
+  searchInput.addEventListener('input', function() {
+    const query = this.value.toLowerCase();
+    for (let item of list) {
+      const text = item.textContent.toLowerCase();
+      item.style.display = text.includes(query) ? '' : 'none';
+    }
+  });
+</script>
+
+{% endblock %}

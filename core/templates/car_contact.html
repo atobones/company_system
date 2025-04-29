@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Контакт водителя{% endblock %}
+
+{% block content %}
+<h2 style="margin-bottom: 20px;">🚗 Машина: <span style="color: #007bff;">{{ car.registration_number }}</span></h2>
+
+{% if car.driver %}
+  <div style="background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); max-width: 500px;">
+    <h3>👤 Водитель: {{ car.driver.full_name }}</h3>
+    <p><strong>📞 Телефон:</strong> {{ car.driver.phone }}</p>
+    <p><strong>✉️ Email:</strong> {{ car.driver.email }}</p>
+  </div>
+{% else %}
+  <p>Для этой машины не назначен водитель.</p>
+{% endif %}
+
+<a href="{% url 'car_list' %}" class="btn btn-back" style="margin-top: 30px;">← Назад к списку машин</a>
+{% endblock %}

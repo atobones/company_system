@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Отчёты — {{ employee }}{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+  <h1 style="font-size: 28px; color: #2c3e50;">
+    <span style="background: linear-gradient(to right, #4facfe, #00f2fe); -webkit-background-clip: text; color: transparent;">
+      📋 Отчёты — {{ employee }}
+    </span>
+  </h1>
+
+  <a href="{% url 'create_report' employee=employee %}" class="btn-report">
+  ➕ Создать отчёт
+</a>
+</div>
+
+{% if reports %}
+  <ul style="list-style: none; padding-left: 0;">
+    {% for date in reports %}
+      <li style="margin-bottom: 10px;">
+        <a href="{% url 'view_report' employee=employee date=date %}" 
+           style="display: inline-block; padding: 12px 18px; background: #fff; border-radius: 8px; text-decoration: none; color: #333; box-shadow: 0 2px 6px rgba(0,0,0,0.08); transition: all 0.2s;">
+          📄 {{ date }}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p style="color: gray; font-style: italic;">Нет сохранённых отчётов</p>
+{% endif %}
+
+<a href="/" class="btn-back" style="margin-top: 30px;">← Назад на главную</a>
+{% endblock %}

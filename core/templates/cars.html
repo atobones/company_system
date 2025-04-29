@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Машины{% endblock %}
+{% block content %}
+
+<!-- КНОПКА добавления -->
+{% if is_admin %}
+<a href="{% url 'add_car' %}" class="btn btn-report">➕ Добавить машину</a>
+{% endif %}
+
+<h2 style="margin-top: 20px;">Список машин</h2>
+
+<input type="text" id="searchInput" placeholder="Поиск..." style="margin-bottom: 10px; padding: 5px; width: 300px;">
+
+<ul id="carList">
+  {% for car in cars %}
+  <li class="list-item" style="background-color: {% if car.color_status == 'red' %}#ffe6e6{% else %}#e6ffe6{% endif %};">
+    <div>
+      <strong>{{ car.registration_number }}</strong>
+      {% if car.driver %}
+        <div style="font-size: 13px; color: #555;">👤 {{ car.driver.full_name }}</div>
+      {% endif %}
+    </div>
+
+    <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+      {% if car.color_status == 'red' and car.driver %}
+        <a href="{% url 'car_contact' car.id %}" class="btn btn-view">📞 Связаться</a>
+      {% endif %}
+      <a href="{% url 'upload_car_file' car.id %}" class="btn btn-download">📁 Файлы</a>
+
+      {% if is_admin %}
+      <a href="{% url 'edit_car' car.id %}" class="btn btn-edit">✏️ Изменить</a>
+      <a href="{% url 'delete_car' car.id %}" class="btn btn-delete">🗑 Удалить</a>
+      {% endif %}
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+
+<script>
+  const searchInput = document.getElementById('searchInput');
+  const list = document.getElementById('carList').getElementsByTagName('li');
+
+  searchInput.addEventListener('input', function() {
+    const query = this.value.toLowerCase();
+    for (let item of list) {
+      const text = item.textContent.toLowerCase();
+      item.style.display = text.includes(query) ? '' : 'none';
+    }
+  });
+</script>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.log
+*.pot
+
+# Django media and static
+/media/
+/staticfiles/
+
+# VSCode and environment
+.vscode/
+/venv/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+
+# Ignore media files (PDFs, uploads, etc.)
+media/

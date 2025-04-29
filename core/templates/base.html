@@ -1,0 +1,297 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Система{% endblock %}</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f7fc;
+      color: #333;
+    }
+
+    .logo-header {
+      text-align: center;
+      background: black;
+      padding: 10px 0;
+      border-bottom: 1px solid #444;
+    }
+
+    .logo-header img {
+      max-height: 60px;
+      max-width: 180px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .navbar {
+      background: #222;
+      color: white;
+      padding: 12px 20px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      margin: 0 20px;
+      font-size: 16px;
+      transition: color 0.2s;
+    }
+
+    .navbar a:hover {
+      color: #00c6ff;
+    }
+
+    .container {
+      padding: 30px 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+	
+	
+	h1, h2, h3 {
+  color: #2c3e50;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+
+.btn-view-purple {
+  background: #6f42c1;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  text-decoration: none;
+  display: inline-block;
+  transition: transform 0.2s, background 0.3s;
+}
+
+.btn-view-purple:hover {
+  background: #5936a7;
+  transform: scale(1.05);
+}
+
+
+p {
+  font-size: 15px;
+  color: #555;
+}
+
+a {
+  transition: all 0.2s ease-in-out;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+ul {
+  padding-left: 0;
+  list-style: none;
+}
+
+ul li a {
+  background: #fff;
+  display: block;
+  padding: 12px 18px;
+  border-radius: 10px;
+  color: #333;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+ul li a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+  color: #007bff;
+}
+
+.empty-message {
+  color: #999;
+  font-style: italic;
+  margin-top: 15px;
+}
+
+
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      padding: 16px 24px;
+      margin-bottom: 12px;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    .list-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .list-item span {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .btn {
+      padding: 8px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.3s, transform 0.2s;
+      display: inline-block;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+    }
+
+    .btn-view { background: #4CAF50; color: white; }
+    .btn-edit { background: #2196F3; color: white; }
+    .btn-delete { background: #f44336; color: white; }
+    .btn-download { background: #555; color: white; }
+    .btn-back { background: #6c757d; color: white; margin-top: 20px; }
+
+    .staff-card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 14px;
+      width: 230px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .staff-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    table th, table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+    }
+
+    table th {
+      background: #f8f9fa;
+      font-weight: bold;
+    }
+
+    input[type="text"], select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    form {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+      max-width: 900px;
+      margin: auto;
+    }
+
+    @media (max-width: 600px) {
+      .staff-card {
+        width: 100%;
+      }
+    }
+	
+	.btn-report {
+  background: linear-gradient(135deg, #00b894, #00cec9);
+  color: white;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.3s;
+  display: inline-block;
+  margin-top: 15px;
+}
+
+.btn-report:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(0,0,0,0.1);
+  background: linear-gradient(135deg, #00cec9, #00b894);
+}
+
+.btn-back {
+  background: #6c757d;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.3s, transform 0.2s;
+  display: inline-block;
+  margin-top: 20px;
+}
+
+.btn-back:hover {
+  background: #5a6268;
+  transform: translateY(-1px);
+}
+
+  </style>
+</head>
+
+<body>
+
+  <!-- Логотип -->
+  <div class="logo-header">
+    <img src="{% static 'logo.png' %}" alt="Logo">
+  </div>
+
+  <!-- Навигация -->
+  <div class="navbar">
+    <a href="/">🏠 Домой</a>
+    <a href="/drivers/">🚶 Водители</a>
+    <a href="/cars/">🚗 Машины</a>
+	<a href="{% url 'license_list' %}">📄 Лицензии</a>
+	{% if user.is_authenticated %}
+    <a href="{% url 'logout' %}">🚪 Выйти</a>
+{% else %}
+    <a href="{% url 'login' %}">🔑 Войти</a>
+{% endif %}
+
+  </div>
+
+  <!-- Контент -->
+  <div class="container">
+    {% block content %}{% endblock %}
+  </div>
+
+</body>
+</html>

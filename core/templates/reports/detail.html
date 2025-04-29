@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Отчёт {{ date }}{% endblock %}
+
+{% block content %}
+<h2>Отчёт {{ employee }} за {{ date }}</h2>
+
+<ul>
+  {% for entry in report %}
+    <li>
+      <strong>🚗 {{ entry.car_number }}</strong> — {{ entry.comment }}<br>
+      Статус: {{ entry.status }}
+    </li>
+  {% endfor %}
+</ul>
+
+<a href="{% url 'delete_report' employee date %}" onclick="return confirm('Удалить отчёт?')" class="btn btn-danger">🗑 Удалить отчёт</a>
+{% endblock %}

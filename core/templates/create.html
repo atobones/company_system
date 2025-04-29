@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Создать отчёт для {{ employee }}</h2>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-success">Создать</button>
+</form>
+<a href="{% url 'report_list' employee %}">← Назад</a>
+{% endblock %}

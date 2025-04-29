@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Лицензии{% endblock %}
+{% block content %}
+
+{% if is_admin %}
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+  <a href="{% url 'add_license' %}" class="btn btn-report">➕ Добавить лицензию</a>
+  <button id="toggleDeleteMode" class="btn btn-delete" style="display: inline-block;">🗑 Удалить лицензии</button>
+</div>
+{% endif %}
+
+<h2 style="margin-top: 25px;">Список лицензий</h2>
+
+<input type="text" id="searchInput" placeholder="Поиск по номеру..." style="margin-bottom: 20px; padding: 8px; width: 300px;">
+
+<form method="POST" action="{% url 'bulk_delete_licenses' %}">
+  {% csrf_token %}
+  <ul id="licenseList">
+    {% for license in licenses %}
+    <li class="list-item license-entry">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        {% if is_admin %}
+        <input type="checkbox" name="license_ids" value="{{ license.id }}" class="delete-checkbox" style="display: none;">
+        {% endif %}
+        <div>
+          <strong>🚗 {{ license.registration_number }}</strong>
+          <div class="text-muted" style="font-size: 13px;">📅 {{ license.created_at|date:"d.m.Y H:i" }} • {{ license.file.name|cut:"licenses/" }}</div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+        <a href="{{ license.file.url }}" target="_blank" class="btn btn-view">👁 Открыть</a>
+        <a href="{{ license.file.url }}" download class="btn btn-download">⬇ Скачать</a>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+
+  {% if is_admin %}
+  <div id="confirmDeleteBox" style="display: none; margin-top: 15px;">
+    <button type="submit" class="btn btn-delete">✅ Удалить выбранные</button>
+    <button type="button" id="cancelDelete" class="btn btn-back">❌ Отмена</button>
+  </div>
+  {% endif %}
+</form>
+
+<script>
+  const toggleBtn = document.getElementById('toggleDeleteMode');
+  const confirmBox = document.getElementById('confirmDeleteBox');
+  const cancelBtn = document.getElementById('cancelDelete');
+  const checkboxes = document.querySelectorAll('.delete-checkbox');
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      checkboxes.forEach(cb => cb.style.display = 'inline-block');
+      confirmBox.style.display = 'block';
+      toggleBtn.style.display = 'none';
+    });
+  }
+
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', () => {
+      checkboxes.forEach(cb => {
+        cb.checked = false;
+        cb.style.display = 'none';
+      });
+      confirmBox.style.display = 'none';
+      toggleBtn.style.display = 'inline-block';
+    });
+  }
+
+  const searchInput = document.getElementById('searchInput');
+  const licenseItems = document.getElementById('licenseList').getElementsByTagName('li');
+
+  searchInput.addEventListener('input', function () {
+    const query = this.value.toLowerCase();
+    for (let item of licenseItems) {
+      const text = item.textContent.toLowerCase();
+      item.style.display = text.includes(query) ? '' : 'none';
+    }
+  });
+</script>
+
+{% endblock %}

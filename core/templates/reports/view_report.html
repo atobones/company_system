@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Отчёт {{ date }} — {{ employee }}{% endblock %}
+
+{% block content %}
+<h1 style="font-size: 32px; font-weight: 800; color: #2c3e50; display: flex; align-items: center;">
+  📅 Отчёт от {{ date }} — <span style="color:#00cec9; margin-left: 8px;">{{ employee }}</span>
+</h1>
+
+{% if entries %}
+  <table>
+    <thead>
+      <tr>
+        <th>Номер машины</th>
+        <th>Комментарий</th>
+        <th>Статус</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in entries %}
+        <tr>
+          <td>{{ item.car_number }}</td>
+          <td>{{ item.comment }}</td>
+          <td>
+            {% if item.status == "готово" %}
+              ✅ Готово
+            {% elif item.status == "не принято" %}
+              ❌ Не принято
+            {% else %}
+              ⏳ В ожидании
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div style="margin-top: 30px; display: flex; gap: 20px; flex-wrap: wrap;">
+    <a href="{% url 'create_report' employee=employee %}?edit_date={{ date }}" class="btn btn-edit" style="background: #ffc107; color: black;">
+      ✏️ Редактировать отчёт
+    </a>
+    <a href="{% url 'delete_report' employee=employee date=date %}" class="btn btn-delete" style="background: #e74c3c;">
+      🗑 Удалить отчёт
+    </a>
+  </div>
+
+{% else %}
+  <p>Нет данных в этом отчёте.</p>
+{% endif %}
+
+<div style="margin-top: 40px;">
+  <a href="{% url 'report_list' employee %}" class="btn-back">← Назад к списку отчётов</a>
+</div>
+{% endblock %}
