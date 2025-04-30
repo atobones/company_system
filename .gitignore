@@ -9,7 +9,6 @@ __pycache__/
 
 # Django media and static
 /media/
-/staticfiles/
 
 # VSCode and environment
 .vscode/
@@ -24,3 +23,5 @@ Thumbs.db
 
 # Ignore media files (PDFs, uploads, etc.)
 media/
+
+db.sqlite3
