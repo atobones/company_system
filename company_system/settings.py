@@ -25,6 +25,7 @@ INSTALLED_APPS = [
 # Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',  # <- добавляем для мультиязычности
     'django.middleware.common.CommonMiddleware',
@@ -105,3 +106,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Медиа файлы (для загрузки и отдачи PDF, фото и т.п.)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
