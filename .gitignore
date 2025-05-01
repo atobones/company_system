@@ -9,6 +9,7 @@ __pycache__/
 
 # Django media and static
 /media/
+/staticfiles/
 
 # VSCode and environment
 .vscode/

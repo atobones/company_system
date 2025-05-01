@@ -119,6 +119,7 @@ class ReportEntry(models.Model):
         return f"{self.car_number} — {self.status}"
     
 
+
 class CustomUser(AbstractUser):
     ROLE_CHOICES = (
         ('admin', 'Админ'),
@@ -131,3 +132,9 @@ class CustomUser(AbstractUser):
 
     def is_manager(self):
         return self.role == 'manager'
+
+    def save(self, *args, **kwargs):
+        # Если суперпользователь, автоматически ставим роль admin
+        if self.is_superuser:
+            self.role = 'admin'
+        super().save(*args, **kwargs)

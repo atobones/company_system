@@ -6,4 +6,7 @@ tzdata==2025.2
 gunicorn
 django-widget-tweaks
 whitenoise
+dj-database-url
+psycopg2-binary
+
 

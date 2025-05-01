@@ -1,3 +1,4 @@
+import dj_database_url
 from pathlib import Path
 import os
 from django.utils.translation import gettext_lazy as _
@@ -57,11 +58,13 @@ WSGI_APPLICATION = 'company_system.wsgi.application'
 
 # База данных
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default='postgresql://companysystemdb_user:utJNEJahb8aAZoJDnfvZ1lOjTQijo6u0@dpg-d08uuvqdbo4c73ebevv0-a.oregon-postgres.render.com/companysystemdb',
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
+
 
 # Валидаторы паролей
 AUTH_PASSWORD_VALIDATORS = [
@@ -109,3 +112,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
