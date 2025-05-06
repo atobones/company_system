@@ -23,13 +23,9 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')),  # ← подключаем маршруты из core
-]
-
-from core import views  # ← добавляем этот импорт
-
-urlpatterns += [
-    path('', views.home, name='home'),  # ← добавляем этот маршрут
+    path('', views.home, name='home'),  # ← маршрут для главной страницы
 ]
 
 # Добавляем обработку медиафайлов (PDF, изображения и т.п.)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

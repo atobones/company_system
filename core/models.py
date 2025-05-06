@@ -1,10 +1,11 @@
-# Create your models here.
 import os
 from django.db import models
 from datetime import date
 from django.conf import settings 
 from django.utils import timezone 
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 
 class Driver(models.Model):
     full_name = models.CharField(max_length=100)
@@ -138,3 +139,22 @@ class CustomUser(AbstractUser):
         if self.is_superuser:
             self.role = 'admin'
         super().save(*args, **kwargs)
+
+
+User = get_user_model()
+
+class ActionLog(models.Model):
+    ACTION_CHOICES = [
+        ('add', 'Добавил'),
+        ('update', 'Изменил'),
+        ('delete', 'Удалил'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    action = models.CharField(max_length=10, choices=ACTION_CHOICES)
+    object_type = models.CharField(max_length=50)
+    object_id = models.IntegerField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} {self.get_action_display()} {self.object_type} (ID {self.object_id})"

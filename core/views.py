@@ -11,6 +11,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .models import Driver, Car, License, Report, ReportEntry
 from .forms import DriverForm, CarForm, LicenseForm
+from .models import ActionLog 
 
 
 # Вход
@@ -85,6 +86,14 @@ def add_driver(request):
         form = DriverForm(request.POST)
         if form.is_valid():
             driver = form.save()
+
+            # ЛОГ ДОБАВЛЕНИЯ
+            ActionLog.objects.create(
+                user=request.user,
+                action="Добавил водителя",
+                object_name=driver.full_name
+            )
+
             return redirect('upload_driver_file', driver_id=driver.id)
     else:
         form = DriverForm()
@@ -97,6 +106,14 @@ def edit_driver(request, driver_id):
         form = DriverForm(request.POST, instance=driver)
         if form.is_valid():
             form.save()
+
+            # ЛОГ ИЗМЕНЕНИЯ
+            ActionLog.objects.create(
+                user=request.user,
+                action="Изменил водителя",
+                object_name=driver.full_name
+            )
+
             return redirect('upload_driver_file', driver_id=driver.id)
     else:
         form = DriverForm(instance=driver)
@@ -106,6 +123,14 @@ def edit_driver(request, driver_id):
 def delete_driver(request, driver_id):
     driver = get_object_or_404(Driver, id=driver_id)
     if request.method == 'POST':
+
+        # ЛОГ УДАЛЕНИЯ
+        ActionLog.objects.create(
+            user=request.user,
+            action="Удалил водителя",
+            object_name=driver.full_name
+        )
+
         driver.delete()
         return redirect('driver_list')
     return render(request, 'delete_driver.html', {'driver': driver})
@@ -135,6 +160,14 @@ def add_car(request):
         form = CarForm(request.POST)
         if form.is_valid():
             car = form.save()
+
+            # ЛОГ ДОБАВЛЕНИЯ
+            ActionLog.objects.create(
+                user=request.user,
+                action="Добавил машину",
+                object_name=car.registration_number
+            )
+
             return redirect('upload_car_file', car_id=car.id)
     else:
         form = CarForm()
@@ -147,6 +180,14 @@ def edit_car(request, car_id):
         form = CarForm(request.POST, instance=car)
         if form.is_valid():
             form.save()
+
+            # ЛОГ ИЗМЕНЕНИЯ
+            ActionLog.objects.create(
+                user=request.user,
+                action="Изменил машину",
+                object_name=car.registration_number
+            )
+
             return redirect('car_list')
     else:
         form = CarForm(instance=car)
@@ -156,6 +197,14 @@ def edit_car(request, car_id):
 def delete_car(request, car_id):
     car = get_object_or_404(Car, id=car_id)
     if request.method == 'POST':
+
+        # ЛОГ УДАЛЕНИЯ
+        ActionLog.objects.create(
+            user=request.user,
+            action="Удалил машину",
+            object_name=car.registration_number
+        )
+
         car.delete()
         return redirect('car_list')
     return render(request, 'delete_car.html', {'car': car})
@@ -334,15 +383,46 @@ def license_list(request):
 @login_required
 def add_license(request):
     if not (request.user.is_authenticated and request.user.is_admin()):
-        # Только админ может добавлять лицензии
         return redirect('license_list')
 
     if request.method == 'POST':
         form = LicenseForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            license = form.save()
+
+            # ЛОГ ДОБАВЛЕНИЯ
+            ActionLog.objects.create(
+                user=request.user,
+                action="Добавил лицензию",
+                object_name=str(license.registration_number)
+            )
+
             return redirect('license_list')
     else:
         form = LicenseForm()
 
     return render(request, 'add_license.html', {'form': form})
+
+@login_required
+def bulk_delete_licenses(request):
+    if request.method == 'POST':
+        ids = request.POST.getlist('license_ids')
+        licenses = License.objects.filter(id__in=ids)
+        for lic in licenses:
+            ActionLog.objects.create(
+                user=request.user,
+                action="Удалил лицензию",
+                object_name=str(lic.registration_number)
+            )
+        licenses.delete()
+    return redirect('license_list')
+
+
+def log_action(user, action, model_name, object_id, description=''):
+    ActionLog.objects.create(
+        user=user,
+        action=action,
+        model_name=model_name,
+        object_id=object_id,
+        description=description,
+    )
