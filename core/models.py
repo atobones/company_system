@@ -30,23 +30,7 @@ class Driver(models.Model):
         null=True
     )
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-
-        # Путь до папки: BASE_DIR/drivers/Имя Фамилия
-        driver_folder = os.path.join(settings.BASE_DIR, 'drivers', self.full_name)
-        os.makedirs(driver_folder, exist_ok=True)
-
-        # Создаём текстовый файл contact.txt
-        contact_file = os.path.join(driver_folder, 'contact.txt')
-        with open(contact_file, 'w', encoding='utf-8') as f:
-            f.write(
-                f"Телефон: {self.phone}\n"
-                f"Email: {self.email}\n"
-                f"Банк: {self.bank_account or '-'}\n"
-                f"Адрес: {self.home_address or '-'}\n"
-                f"Фирма: {self.company or '-'}"
-            )
+    file = models.FileField(upload_to='drivers/', blank=True, null=True)
 
     def __str__(self):
         return self.full_name
@@ -62,10 +46,11 @@ class Car(models.Model):
         default='green'
     )
 
-    driver = models.ForeignKey(Driver, on_delete=models.SET_NULL, null=True, blank=True, related_name='cars')  # 🔗 связь с водителем
+    driver = models.ForeignKey(Driver, on_delete=models.SET_NULL, null=True, blank=True, related_name='cars')
+
+    file = models.FileField(upload_to='cars/', blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        # Проверяем дату страховки
         if date.today() > self.insurance_expiry:
             self.color_status = 'red'
         else:
@@ -73,12 +58,9 @@ class Car(models.Model):
 
         super().save(*args, **kwargs)
 
-        # Создаём папку с номером машины
-        car_folder = os.path.join(settings.BASE_DIR, 'cars', self.registration_number)
-        os.makedirs(car_folder, exist_ok=True)
-
     def __str__(self):
         return self.registration_number
+
     
     
 class License(models.Model):
