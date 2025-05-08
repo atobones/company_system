@@ -413,8 +413,9 @@ def bulk_delete_licenses(request):
         for lic in licenses:
             ActionLog.objects.create(
                 user=request.user,
-                action="Удалил лицензию",
-                object_name=str(lic.registration_number)
+                action='delete',
+                object_type='License',
+                object_id=license.id
             )
         licenses.delete()
     return redirect('license_list')
