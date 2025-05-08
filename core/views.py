@@ -393,8 +393,9 @@ def add_license(request):
             # ЛОГ ДОБАВЛЕНИЯ
             ActionLog.objects.create(
                 user=request.user,
-                action="Добавил лицензию",
-                object_name=str(license.registration_number)
+                action='add',
+                object_type='Лицензия',
+                object_id=license.id
             )
 
             return redirect('license_list')
@@ -402,6 +403,7 @@ def add_license(request):
         form = LicenseForm()
 
     return render(request, 'add_license.html', {'form': form})
+
 
 @login_required
 def bulk_delete_licenses(request):
