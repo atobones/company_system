@@ -415,7 +415,7 @@ def bulk_delete_licenses(request):
                 user=request.user,
                 action='delete',
                 object_type='License',
-                object_id=license.id
+                object_id=lic.id
             )
         licenses.delete()
     return redirect('license_list')
